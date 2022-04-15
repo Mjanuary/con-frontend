@@ -23,12 +23,12 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
   if (auth.isAuthenticated === false) return null;
   return (
     <nav
-      className={`overflow-auto
+      className={`overflow-auto text-sm
         bg-white dark:bg-dark-800 dark:text-white 
         pr-3 pl-0 py-1 border-gray-200 dark:border-gray-700 
         border-r p-2 pt-20 fixed bottom-0 ${
           app.side_menu === true ? "lg:left-0 left-0" : "-left-80 lg:left-0"
-        }  top-0 z-40 w-60
+        }  top-0 z-40 w-52
     `}
     >
       {/* <img
@@ -40,14 +40,14 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
       <div className="mt-8 mb-1 side-navigation-container">
         <NavLink to={"/"} className={`navigation-item `} exact>
           <div className="mr-1">
-            <MdHome className="text-2xl" />
+            <MdHome className="text-xl" />
           </div>
           <span className="flex-1">Home</span>
         </NavLink>
 
         <NavLink to={"/dashboard"} className={`navigation-item `} exact>
           <div className="mr-1">
-            <MdDashboard className="text-2xl" />
+            <MdDashboard className="text-xl" />
           </div>
           <span className="flex-1">Dashboard</span>
         </NavLink>
@@ -55,11 +55,25 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
         {checkAccess(access_list, UsersAccess.DOCUMENTS) && (
           <NavLink to={"/documents"} className={`navigation-item `} exact>
             <div className="mr-1">
-              <MdHome className="text-2xl" />
+              <MdHome className="text-xl" />
             </div>
             <span className="flex-1">Documents</span>
           </NavLink>
         )}
+
+        <NavLink to={"/document-details"} className={`navigation-item `} exact>
+          <div className="mr-1">
+            <MdHome className="text-xl" />
+          </div>
+          <span className="flex-1">Document-details</span>
+        </NavLink>
+
+        <NavLink to={"/create-document"} className={`navigation-item `} exact>
+          <div className="mr-1">
+            <MdHome className="text-xl" />
+          </div>
+          <span className="flex-1">Register document</span>
+        </NavLink>
       </div>
     </nav>
   );

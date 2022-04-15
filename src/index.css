@@ -56,9 +56,17 @@ input[type="number"] {
 }
 
 .main-side-spacer {
-  @apply lg:w-60 w-0;
+  @apply lg:w-52 w-0;
 }
 
 .z-60 {
   z-index: 60;
+}
+
+.height-calculated {
+  height: calc(100vh - 3rem) !important;
+}
+
+.bg-body-color {
+  background-color: #f0f2f5;
 }

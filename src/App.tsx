@@ -31,13 +31,21 @@ const Login = lazy(() =>
   }))
 );
 
-// const HRTermination = lazy(() =>
-//   import("./containers/HRTermination/HRTermination").then(
-//     ({ HRTermination }) => ({
-//       default: HRTermination,
-//     })
-//   )
-// );
+const DocumentDetails = lazy(() =>
+  import("./containers/DocumentDetails/DocumentDetails").then(
+    ({ DocumentDetails }) => ({
+      default: DocumentDetails,
+    })
+  )
+);
+
+const CreateDocument = lazy(() =>
+  import("./containers/CreateDocument/CreateDocument").then(
+    ({ CreateDocument }) => ({
+      default: CreateDocument,
+    })
+  )
+);
 
 // props for the component
 interface AppProps {
@@ -124,11 +132,11 @@ class _App extends React.Component<AppProps, AppState> {
       <Router basename={"/congo"}>
         <Navigation />
         <SideNavigation />
-        <div className="dark:bg-dark-900 min-h-screen lg:flex">
+        <div className=" lg:flex">
           {this.props.auth.isAuthenticated === true && (
             <div className="main-side-spacer"></div>
           )}
-          <div className="flex-1 min-h-screen bg-primary-100 dark:bg-dark-900">
+          <div className="flex-1 dark:bg-dark-900">
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Suspense fallback={<LazyLoading />}>
@@ -142,13 +150,21 @@ class _App extends React.Component<AppProps, AppState> {
                   exact
                 />
 
-                {/* <ProtectedRoute
-                  path="/redirect-register"
-                  component={RedirectToRegisterCandidate}
+                <ProtectedRoute
+                  path="/document-details"
+                  component={DocumentDetails}
                   isAuthenticated={this.props.auth.isAuthenticated}
                   authenticationPath={this.authenticationPath}
                   exact
-                /> */}
+                />
+
+                <ProtectedRoute
+                  path="/create-document"
+                  component={CreateDocument}
+                  isAuthenticated={this.props.auth.isAuthenticated}
+                  authenticationPath={this.authenticationPath}
+                  exact
+                />
               </Suspense>
             </Switch>
           </div>
