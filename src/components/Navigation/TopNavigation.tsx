@@ -7,8 +7,10 @@ import LogoImage from "../../assets/logo.jpg";
 import {
   App,
   Auth,
+  FC_ChangeCurrentAccess,
   FC_Logout,
   FC_SideNav,
+  FT_ChangeCurrentAccess,
   FT_Logout,
   FT_SideNav,
 } from "../../actions";
@@ -20,6 +22,7 @@ type RenderBuiltInComponentProps = {
   app: App;
   FC_SideNav: FT_SideNav;
   FC_Logout: FT_Logout;
+  FC_ChangeCurrentAccess: FT_ChangeCurrentAccess;
 };
 
 const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
@@ -27,6 +30,7 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
   auth,
   FC_SideNav,
   FC_Logout,
+  FC_ChangeCurrentAccess,
 }): ReactElement => {
   const [Account, setAccount] = useState(false);
 
@@ -62,6 +66,24 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
           </div>
         </div>
         <div className="">
+          {auth.access.length > 1 && (
+            <select
+              onChange={(e) => {
+                if (window.confirm("Voulez-vous vraiment modifier le rôle?"))
+                  FC_ChangeCurrentAccess(e.target.value);
+              }}
+              className="p-1 border bg-blue-100 text-blue-700 font-bold rounded mr-3"
+              value={auth.selected_access?.user_to_access_id}
+            >
+              {auth.access.map((itm, i) => (
+                <option key={i} value={itm.user_to_access_id}>
+                  {itm.role_name} - {itm.domain_name}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+        <div className="">
           {auth.isAuthenticated === true && auth.user !== null ? (
             <div
               onClick={setAccount.bind(this, !Account)}
@@ -72,7 +94,7 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
                 <h3 className="">{auth.user?.last_name}</h3>
                 {auth.user !== null && (
                   <h3 className="text-primary-dark -mt-1 text-xs">
-                    {auth.user?.role_name}{" "}
+                    {auth.selected_access?.role_name}{" "}
                   </h3>
                 )}
               </div>
@@ -112,6 +134,7 @@ const mapStateToProps = ({
 const RenderBuiltInComponent = connect(mapStateToProps, {
   FC_SideNav,
   FC_Logout,
+  FC_ChangeCurrentAccess,
 })(_RenderBuiltInComponent);
 
 export default RenderBuiltInComponent;
@@ -142,7 +165,7 @@ const AccountModal: FC<{
           </p>
 
           <label className="text-white bg-blue-600 px-2 py-1 rounded">
-            {user?.role_name}
+            {auth.selected_access?.role_name}
           </label>
         </div>
 

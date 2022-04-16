@@ -13,27 +13,41 @@ const url = `${APP_URL}/auth`;
  * * ****************************** INTERFACES *****************************
  */
 
-export interface API_RequestAuth {
+export interface AuthUser {
   user_id: string;
   email: string;
   first_name: string;
   last_name: string;
   middle_name: string;
+  status: string;
   phone: string;
-  role_id: string;
-  role_name: string;
-  user_to_access_id: string;
-  date: Date | null;
-  access: string;
 }
 
+export interface AuthAccess {
+  role_name: string;
+  access: string;
+  user_to_access_id: string;
+  user_id: string;
+  role_id: string;
+  date: Date | null;
+  domain_id: string;
+  domain_name: string;
+}
+
+export interface API_RequestAuth {
+  user: AuthUser;
+  access: AuthAccess[];
+}
 export interface API_RequestAuth_Login extends API_RequestAuth {
   jwt: string;
 }
 
 export interface Auth {
   isAuthenticated: boolean;
-  user: API_RequestAuth_Login | null;
+  user: AuthUser | null;
+  access: AuthAccess[];
+  selected_access: AuthAccess | null;
+  jwt: string;
 }
 
 /**
@@ -62,11 +76,6 @@ export const FC_Login = (
 
       setAxiosToken(res.data.token);
       const res_details = await axios.get<API_RequestAuth>(`${url}/me`);
-
-      console.log({ LOGIN_INFO: res.data, LOGIN_DATA: res_details.data });
-
-      // * save data
-      // console.log({ jwt: res.data.jwt });
 
       dispatch<SaveAuthData>({
         type: ActionTypes.LOGIN_DETAILS,
@@ -128,3 +137,15 @@ export const FC_Logout = () => {
     type: ActionTypes.LOGOUT,
   } as Logout;
 };
+
+//* Change access
+export interface ChangeCurrentAccess {
+  type: ActionTypes.CHANGE_CURRENT_ACCESS;
+  payload: string;
+}
+
+export type FT_ChangeCurrentAccess = (access_id: string) => void;
+export const FC_ChangeCurrentAccess = (access_id: string) => ({
+  type: ActionTypes.CHANGE_CURRENT_ACCESS,
+  payload: access_id,
+});

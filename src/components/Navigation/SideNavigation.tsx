@@ -18,7 +18,7 @@ const _RenderBuiltInComponent: FC<RenderBuiltInComponentProps> = ({
   app,
   auth,
 }): ReactElement | null => {
-  let access_list = auth.user?.access;
+  let access_list = auth.selected_access?.access;
 
   if (auth.isAuthenticated === false) return null;
   return (
